@@ -6,15 +6,11 @@ class CSubject;
 class CObserver
 {
 public:
-    CObserver(CSubject *pSubject = 0);
+    CObserver();
     virtual ~CObserver();
+
     virtual void update() = 0;
 
-    void setSubject(CSubject *pSubject);
-    CSubject* getSubject() const;
-
-protected:
-    CSubject *m_pSubject;
 };
 
 #endif // COBSERVER_H

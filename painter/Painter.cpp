@@ -1,7 +1,7 @@
 #include "Painter.h"
-#include "command_service.h"
-#include "page.h"
-#include "data_manager.h"
+#include "cmd/command_service.h"
+#include "core/page.h"
+#include "commands/data_manager.h"
 
 #include <QDockWidget>
 #include <QTabBar>
@@ -42,6 +42,8 @@ void CPainter::create_Page_Tab()
 {
     m_pPageTab = new CPageTab(m_pMainWidget);
     m_pMainLayout->addWidget(m_pPageTab);
+    m_pMainLayout->setAlignment(m_pPageTab, Qt::AlignCenter);
+
     const bool b = QObject::connect(m_pPageTab->tabBar(), SIGNAL(currentChanged(int)), this, SLOT(page_changed(int)));
     Q_ASSERT(b);
     create_New_Page(0);
@@ -68,13 +70,16 @@ void CPainter::create_New_Page(int indx)
     CData* pData = new CData();
     QSize ds = QApplication::desktop()->size();
     pData->setPageSize(ds.width(), ds.height());
+
     CDataManager* pDataManager = CDataManager::getInstance();
     pDataManager->appendData(pData);
     pDataManager->setActiveData(pDataManager->count() - 1);
+
     CPage *pPage = new CPage(pDataManager->getActiveData());
     CPageManager* pPageManager = CPageManager::getInstance();
     pPageManager->setActivePage(pPageManager->count() - 1);
     pPageManager->appendPage(pPageManager->getActivePage());
+
     m_pPageTab->insertTab(indx, pPage, "Page_" + QString::number(indx + 1));
     m_pPageTab->setCurrentIndex(indx);
 }
@@ -83,6 +88,7 @@ void CPainter::set_Active_Page(int indx)
 {
     CPageManager *pPageManager = CPageManager::getInstance();
     pPageManager->setActivePage(indx);
+
     CDataManager *pDataManager = CDataManager::getInstance();
     pDataManager->setActiveData(indx);
 }

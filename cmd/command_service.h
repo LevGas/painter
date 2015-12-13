@@ -1,16 +1,23 @@
 #ifndef CCOMMAND_SERVICE_H
 #define CCOMMAND_SERVICE_H
 
-#include "command_base.h"
-#include "data.h"
-
+///////////////////////////////////////////////////
+//  includes
+///////////////////////////////////////////////////
+#include "commands/command_base.h"
+#include "commands/expresion.h"
+#include "core/data.h"
 #include <map>
 #include <string>
+
+
 
 typedef class CCommand_Service
 {
 public:
     ~CCommand_Service();
+
+public:
     command* getCommand(const std::string & sCommand) const;
 
     void loadCommands();
@@ -29,6 +36,8 @@ private:
 
 private:
     std::map<std::string, command*> m_mapDataBasa;
+    CContext* m_pContext;
+
     bool m_bLoaded;
 
 } cmdService;

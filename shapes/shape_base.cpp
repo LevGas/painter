@@ -1,5 +1,4 @@
 #include "shape_base.h"
-#include "data.h"
 
 CShape_Base::CShape_Base(double x, double y)
             : m_dCord_x(x),

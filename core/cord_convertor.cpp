@@ -18,11 +18,26 @@ int CCordConvertor::convert_X(int x) const
     return new_x;
 }
 
-int CCordConvertor::convert_y(int y) const
+int CCordConvertor::convert_Y(int y) const
 {
-    int new_y = y + m_nOrigin_y;
+    int new_y = m_nOrigin_y - y;
     return new_y;
 }
+
+
+double CCordConvertor::convert_X(double x) const
+{
+    double new_x = x + m_nOrigin_x;
+    return new_x;
+}
+
+
+double CCordConvertor::convert_Y(double y) const
+{
+    double new_y = m_nOrigin_y - y;
+    return new_y;
+}
+
 
 void CCordConvertor::setOrigin(int x, int y)
 {

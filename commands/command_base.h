@@ -1,18 +1,21 @@
 #ifndef CCOMMAND_BASE_H
 #define CCOMMAND_BASE_H
 
-#include "data.h"
+#include "vector"
+#include "expresion.h"
 
-#include <QStringList>
 
-typedef class CCommand_Base
+typedef class CCommand_Base : public CExpr
 {
 public:
     CCommand_Base();
     virtual ~CCommand_Base();
 
-    virtual void exec(const QStringList & args) = 0;
+public:
+    virtual double eval( CContext& ) = 0;
 
 } command;
 
+
 #endif // CCOMMAND_BASE_H
+// end of file

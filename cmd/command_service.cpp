@@ -1,10 +1,12 @@
 #include "command_service.h"
-#include "create_command_base.h"
-#include "create_rect_command.h"
-#include "create_circle_command.h"
-#include "clear_command.h"
-#include "close_command.h"
-#include "exit_command.h"
+#include "commands/create_command_base.h"
+#include "commands/create_rect_command.h"
+#include "commands/create_circle_command.h"
+#include "commands/clear_command.h"
+#include "commands/close_command.h"
+#include "commands/exit_command.h"
+#include "commands/create_square_command.h"
+#include "commands/create_line_command.h"
 
 CCommand_Service::CCommand_Service()
             : m_bLoaded(false)
@@ -16,8 +18,8 @@ CCommand_Service::~CCommand_Service()
     std::map<std::string, CCommand_Base*>::iterator it = m_mapDataBasa.begin();
     while (it != m_mapDataBasa.end())
     {
-        delete (*it).second;
-        m_mapDataBasa.erase(it);
+        CCommand_Base* pCommand = (*it++).second;
+        delete pCommand;
     }
 }
 
@@ -46,21 +48,19 @@ command *CCommand_Service::getCommand(const std::string & sCommand) const
     command *pRet = NULL;
     std::map<std::string, command*>::const_iterator it = m_mapDataBasa.find(sCommand);
     if (it != m_mapDataBasa.end())
+    {
         pRet = (*it).second;
+    }
+
     return pRet;
 }
+
 
 void CCommand_Service::loadCommands()
 {
     if (!m_bLoaded)
     {
         m_bLoaded = true;
-
-        command *pCreateRect = new createRect;
-        m_mapDataBasa["createrect"] = pCreateRect;
-
-        command *pCreateCircle  = new createCircle;
-        m_mapDataBasa["createcircle"] = pCreateCircle;
 
         command *pClear = new CClear_Command;
         m_mapDataBasa["clear"] = pClear;
@@ -70,6 +70,5 @@ void CCommand_Service::loadCommands()
 
         command *pExit = new CExit_Command;
         m_mapDataBasa["exit"] = pExit;
-        // TODO
     }
 }

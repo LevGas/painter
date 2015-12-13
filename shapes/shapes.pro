@@ -10,16 +10,20 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = shapes
 TEMPLATE = lib
-VPATH += shapes
-LIBS += -L/usr/lib/nvidia-331-updates
+INCLUDEPATH += . ..
+DESTDIR = $$OUT_PWD/../lib
+LIBS += -L/usr/lib/nvidia-340-updates
+
 
 SOURCES += shape_base.cpp \
     rectangle.cpp \
-    circle.cpp 
+    circle.cpp \  
+    square.cpp \
+    line.cpp
 
-HEADERS  += \
-    shape_base.h \
+HEADERS  += shape_base.h \
     rectangle.h \
-    circle.h 
+    circle.h \  
+    square.h \
+    line.h
     
-FORMS    +=

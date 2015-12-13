@@ -11,7 +11,8 @@ public:
     CExit_Command();
     ~CExit_Command();
 
-    void exec(const QStringList &/*args*/);
+public:
+    double eval( CContext& );
 };
 
 #endif // CEXIT_COMMAND_H

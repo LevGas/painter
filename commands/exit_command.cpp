@@ -11,8 +11,10 @@ CExit_Command::~CExit_Command()
 {
 }
 
-void CExit_Command::exec(const QStringList &/*args*/)
+double CExit_Command::eval(CContext &)
 {
     QApplication::quit();
+
+    return 0.0;
 }
 

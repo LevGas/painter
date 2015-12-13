@@ -10,15 +10,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = painter
 TEMPLATE = app
-VPATH += painter
-LIBS += -L/usr/lib/nvidia-331-updates
+DESTDIR = $$OUT_PWD/../bin
+REL_PATH= $$OUT_PWD/../lib
+LIBS += -L/usr/lib/nvidia-340-updates -L$$REL_PATH -lshapes -lcore -lcommands -lcmd
+INCLUDEPATH += . ..
 
-SOURCES += main.cpp \
-    Painter.cpp \
-    page_tab.cpp 
+SOURCES += Painter.cpp \
+        page_tab.cpp \
+        main.cpp
 
-HEADERS  += \
-    Painter.h \
-    page_tab.h 
+HEADERS  += Painter.h \
+        page_tab.h
 
-FORMS    +=

@@ -10,22 +10,20 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = core
 TEMPLATE = lib
-VPATH += core
-LIBS += -L/usr/lib/nvidia-331-updates
+DESTDIR = $$OUT_PWD/../lib
+LIBS += -L/usr/lib/nvidia-340-updates -L$$DESTDIR -lshapes
+INCLUDEPATH += . ..
 
 SOURCES += observer.cpp \
     subject.cpp \
     data.cpp \
     page.cpp \
-    data_manager.cpp \
-    page_manager.cpp 
+    page_manager.cpp \
+    cord_convertor.cpp
 
-HEADERS  += \
-    observer.h \
+HEADERS  += observer.h \
     subject.h \
     data.h \
     page.h \
-    data_manager.h \
     page_manager.h \
-
-FORMS    +=
+    cord_convertor.h

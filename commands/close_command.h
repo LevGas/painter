@@ -3,7 +3,7 @@
 
 #include "command_base.h"
 
-#include "QStringList"
+#include <QStringList>
 
 class CClose_Command : public CCommand_Base
 {
@@ -11,7 +11,8 @@ public:
     CClose_Command();
     ~CClose_Command();
 
-    void exec(const QStringList &);
+public:
+    double eval( CContext& );
 
 };
 

@@ -1,29 +1,30 @@
 #include "page.h"
-#include "rectangle.h"
-#include "circle.h"
-#include "data_manager.h"
-
 #include <QGraphicsRectItem>
 #include <QGraphicsEllipseItem>
 #include <QRectF>
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDebug>
 
 
-CPage::CPage(CSubject *pSubject, QWidget *parent)
+CPage::CPage(CData *pData, QWidget *parent)
             : QWidget(parent),
-              CObserver(pSubject),
+              CObserver(),
+              m_pData(pData),
               m_nWidth(0),
               m_nHeight(0),
               m_nItemCount(0)
 
 {
+    m_pCoordConvertor = new CCordConvertor;
+
+    m_pData->attach(this);
+
     m_pScene = new QGraphicsScene;
-    CData *pData = dynamic_cast<CData*>(pSubject);
-    Q_ASSERT(pData != 0);
-    setPageSize(pData->getWidth(), pData->getHeight());
-    drow_cord_system();
+    setPageSize(m_pData->getWidth(), m_pData->getHeight());
+
+    draw_cord_system();
     m_pView = new QGraphicsView;
     m_pView->centerOn(m_nWidth / 2, m_nHeight / 2);
     m_pView->setScene(m_pScene);
@@ -34,46 +35,102 @@ CPage::CPage(CSubject *pSubject, QWidget *parent)
 
 CPage::~CPage()
 {
+    m_pData->dettach(this);
 }
 
-void CPage::drow_cord_system()
+void CPage::draw_cord_system()
 {
     m_pScene->addLine(0, m_nHeight / 2, m_nWidth, m_nHeight / 2);
     m_pScene->addLine(m_nWidth / 2, 0, m_nWidth / 2, m_nHeight);
 }
 
-void CPage::update()
+
+void CPage::draw_rect(CRectangle *pRect)
 {
-    CData *pData = dynamic_cast<CData*>(m_pSubject);
-    Q_ASSERT(pData != NULL);
-    if (pData->count() > m_nItemCount)
+    double x =  m_pCoordConvertor->convert_X( pRect->get_X() );
+    double y =  m_pCoordConvertor->convert_Y( pRect->get_Y() );
+
+    QRectF rect(x, y, pRect->get_Width(), pRect->get_Height());
+    QGraphicsItem* pRectItem = new QGraphicsRectItem(rect);
+    m_pScene->addItem(pRectItem);
+    ++m_nItemCount;
+}
+
+
+void CPage::draw_circle(CCircle *pCircle)
+{
+    double x = m_pCoordConvertor->convert_X( pCircle->get_X() ) - pCircle->getRadius();
+    double y = m_pCoordConvertor->convert_Y( pCircle->get_Y() ) - pCircle->getRadius();
+
+    QRectF rect(x, y, 2 * pCircle->getRadius(), 2 * pCircle->getRadius());
+    QGraphicsItem *pCircleItem = new QGraphicsEllipseItem(rect);
+    m_pScene->addItem(pCircleItem);
+    ++m_nItemCount;
+}
+
+
+void CPage::draw_square(CSquare *pSquare)
+{
+    double x = m_pCoordConvertor->convert_X( pSquare->get_X() );
+    double y = m_pCoordConvertor->convert_Y( pSquare->get_Y() );
+
+    QRectF rect(x, y, pSquare->get_Width(), pSquare->get_Width());
+    QGraphicsItem* pRectItem = new QGraphicsRectItem(rect);
+    m_pScene->addItem(pRectItem);
+    ++m_nItemCount;
+}
+
+
+void CPage::draw_line(CLine *pLine)
+{
+    double x1 = m_pCoordConvertor->convert_X( pLine->get_X() );
+    double y1 = m_pCoordConvertor->convert_Y( pLine->get_Y() );
+    double x2 = m_pCoordConvertor->convert_X( pLine->get_Dest_X() );
+    double y2 = m_pCoordConvertor->convert_Y( pLine->get_Dest_Y() );
+
+//    qDebug() << x1 << " " << y1 << " " << x2 << " " << y2;
+
+    QLineF line(x1, y1, x2, y2);
+    QGraphicsItem *pLineItem = new QGraphicsLineItem(line);
+    m_pScene->addItem(pLineItem);
+    ++m_nItemCount;
+}
+
+
+void CPage::update()
+{   
+    if (m_pData->count() > m_nItemCount)
     {
-        CShape_Base *pShape = pData->lastShape();
+        CShape_Base *pShape = m_pData->lastShape();
         Q_ASSERT(pShape != 0);
         switch (pShape->type())
         {
         case CShape_Base::eRect:
         {
-            CRectangle *pRect = dynamic_cast<CRectangle*>(pShape);
-            Q_ASSERT(pRect != NULL);
-            double x = pRect->get_X();
-            double y = pRect->get_Y();
-            QRectF rect(x, y, pRect->get_Width(), pRect->get_Height());
-            QGraphicsItem* pRectItem = new QGraphicsRectItem(rect);
-            m_pScene->addItem(pRectItem);
-            ++m_nItemCount;
+            CRectangle *pRect = static_cast<CRectangle*>(pShape);
+            draw_rect(pRect);
+
             break;
        }
        case CShape_Base::eCircle:
        {
-            CCircle *pCircle = dynamic_cast<CCircle*>(pShape);
-            Q_ASSERT(pCircle != NULL);
-            double x = pCircle->get_X() - pCircle->getRadius();
-            double y = pCircle->get_Y() - pCircle->getRadius();
-            QRectF rect(x, y, 2 * pCircle->getRadius(), 2 * pCircle->getRadius());
-            QGraphicsItem *pCircleItem = new QGraphicsEllipseItem(rect);
-            m_pScene->addItem(pCircleItem);
-            ++m_nItemCount;
+            CCircle *pCircle = static_cast<CCircle*>(pShape);
+            draw_circle(pCircle);
+
+            break;
+        }
+        case CShape_Base::eSquare:
+        {
+            CSquare *pSquare = static_cast<CSquare*>(pShape);
+            draw_square(pSquare);
+
+            break;
+        }
+        case CShape_Base::eLine:
+        {
+            CLine *pLine = static_cast<CLine*>(pShape);
+            draw_line(pLine);
+
             break;
         }
         default:
@@ -84,7 +141,7 @@ void CPage::update()
     {
         m_pScene->clear();
         m_nItemCount = 0;
-        drow_cord_system();
+        draw_cord_system();
     }
 }
 
@@ -101,6 +158,9 @@ void CPage::setPageSize(int w, int h)
         m_nWidth = 0;
 
     m_pScene->setSceneRect(0, 0, m_nWidth, m_nHeight);
+
+    m_pCoordConvertor->setSize(m_nWidth, m_nHeight);
+    m_pCoordConvertor->setOrigin(m_nWidth / 2, m_nHeight / 2);
 }
 
 

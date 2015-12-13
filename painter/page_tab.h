@@ -1,7 +1,7 @@
 #ifndef CPAGE_TAB_H
 #define CPAGE_TAB_H
 
-#include "page.h"
+#include "core/page.h"
 
 #include <QTabWidget>
 #include <QList>

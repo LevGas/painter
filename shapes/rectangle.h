@@ -2,7 +2,6 @@
 #define CRECTANGLE_H
 
 #include "shape_base.h"
-#include "data.h"
 
 class CRectangle : public CShape_Base
 {

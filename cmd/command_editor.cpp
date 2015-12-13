@@ -1,14 +1,14 @@
-#include "line_edit.h"
+#include "command_editor.h"
 
-CLine_Edit::CLine_Edit(QWidget *parent)
-        : QLineEdit(parent)
+CCommand_Editor::CCommand_Editor(QWidget* pParent)
+        : QLineEdit(pParent)
 {
-    QObject::connect(this, SIGNAL(returnPressed()), this, SLOT(return_pressed()));
+    QObject::connect(this, SIGNAL(returnPressed()), this, SLOT(commandEdited()));
     QObject::connect(this, SIGNAL(returnPressed()), this, SLOT(clear()));
 }
 
-void CLine_Edit::return_pressed()
-{
-    emit text_edited(text());
-}
 
+ void CCommand_Editor::commandEdited()
+ {
+     emit sigNewCommand( text() );;
+ }

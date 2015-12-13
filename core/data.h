@@ -2,8 +2,6 @@
 #define CDATA_H
 
 #include "subject.h"
-#include "cord_convertor.h"
-
 #include <list>
 
 class CShape_Base;
@@ -29,7 +27,6 @@ private:
     std::list<CShape_Base*> m_lstSahpes;
     int m_nPageWidth;
     int m_nPageHeight;
-    CCordConvertor *m_pCordConvertor;
 
 };
 

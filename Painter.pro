@@ -9,17 +9,13 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Painter
-TEMPLATE = subdir
-LIBS += -L/usr/lib/nvidia-331-updates
-INCLUDEPATH += $$PWD
-SUBDIRS = cmd \
-          commands \
-          core \
-          painter \
-          shapes
+TEMPLATE = subdirs
 
-include($$PWD/cmd/cmd.pro)
-include($$PWD/commands/commands.pro)
-include($$PWD/core/core.pro)
-include($$PWD/painter/painter.pro)
-include($$PWD/shapes/shapes.pro)
+SUBDIRS += shapes \
+          core \
+          commands \
+          cmd \
+
+CONFIG += ordered
+SUBDIRS += painter
+

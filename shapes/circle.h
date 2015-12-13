@@ -1,7 +1,7 @@
 #ifndef CCIRCLE_H
 #define CCIRCLE_H
 
-#include <shape_base.h>
+#include "shape_base.h"
 
 class CCircle : public CShape_Base
 {

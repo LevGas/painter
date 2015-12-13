@@ -1,13 +1,12 @@
 #include "data.h"
-#include "shape_base.h"
+#include "shapes/shape_base.h"
 #include "page.h"
-
 #include <list>
+
 
 CData::CData()
        : CSubject()
 {
-    m_pCordConvertor = new CCordConvertor;
 }
 
 CData::~CData()
@@ -28,12 +27,24 @@ void CData::add(CShape_Base* pShape)
     {
         if ((*it) == pShape)
             break;
+
         ++it;
     }
+
     if (it == m_lstSahpes.end())
     {
-        pShape->set_X(m_pCordConvertor->convert_X(pShape->get_X()));
-        pShape->set_Y(m_pCordConvertor->convert_y(pShape->get_Y()));
+ //       pShape->set_X(m_pCordConvertor->convert_X(pShape->get_X()));
+ //       pShape->set_Y(m_pCordConvertor->convert_y(pShape->get_Y()));
+
+//        if (pShape->type() == CShape_Base::eLine)
+  //      {
+   //         CLine *pLine = static_cast<CLine*>(pShape);
+    //        pLine->set_Dest_X(m_pCordConvertor->convert_X(pLine->get_Dest_X()));
+     //       pLine->set_Dest_Y(m_pCordConvertor->convert_y(pLine->get_Dest_Y()));
+
+        //    pShape = pLine;
+        //}
+
         m_lstSahpes.push_back(pShape);
         notify();
     }
@@ -90,9 +101,6 @@ void CData::setPageSize(int w, int h)
 {
     m_nPageHeight = h;
     m_nPageWidth = w;
-
-    m_pCordConvertor->setSize(w, h);
-    m_pCordConvertor->setOrigin(w/2, h/2);
 }
 
 int CData::getHeight() const

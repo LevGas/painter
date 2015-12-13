@@ -1,5 +1,5 @@
 #include <QVBoxLayout>
-
+#include <exception>
 #include "command_panel.h"
 #include "command_parser.h"
 
@@ -9,14 +9,20 @@ CCommand_Panel::CCommand_Panel(QWidget *parent)
 {
     m_CurrentCommand = m_CommandBuffer.begin();
 
-    QVBoxLayout *pMainLayout = new QVBoxLayout(this);
+    QVBoxLayout *pMainLayout = new QVBoxLayout();
     setLayout(pMainLayout);
-    m_pTextEdit = new QTextEdit(this);
-    pMainLayout->addWidget(m_pTextEdit);
-    m_pTextEdit->setReadOnly(true);
-    m_pLineEdit = new CLine_Edit(this);
-    QObject::connect(m_pLineEdit, SIGNAL(text_edited(QString)), this, SLOT(get_command(QString)));
-    pMainLayout->addWidget(m_pLineEdit);
+
+    m_pCommandsStory = new QTextEdit();
+    m_pCommandsStory->setReadOnly(true);
+    pMainLayout->addWidget(m_pCommandsStory);
+
+
+    m_pCommandEditor = new CCommand_Editor(this);
+    pMainLayout->addWidget(m_pCommandEditor);
+
+
+    // set connections
+    QObject::connect(m_pCommandEditor, SIGNAL(sigNewCommand(QString)), this, SLOT(get_command(QString)));
 }
 
 CCommand_Panel::~CCommand_Panel()
@@ -26,13 +32,25 @@ CCommand_Panel::~CCommand_Panel()
 
 void CCommand_Panel::get_command(QString sCommand)
 {
-    parser *pParser = parser::getInstance();
-    pParser->parse(sCommand);
+    parser* pParser = parser::getInstance();
+
+    try
+    {
+        pParser->parse(sCommand);
+    }
+    catch( std::exception& err )
+    {
+        m_CommandBuffer.append(sCommand);
+        m_CurrentCommand = m_CommandBuffer.end();
+        m_pCommandsStory->append( QString("Error command ") + sCommand );
+        return;
+    }
+
     if (!sCommand.isEmpty() && !sCommand.isNull())
     {
         m_CommandBuffer.append(sCommand);
         m_CurrentCommand = m_CommandBuffer.end();
-        m_pTextEdit->append(sCommand);
+        m_pCommandsStory->append(sCommand);
     }
 }
 
@@ -46,7 +64,7 @@ void CCommand_Panel::keyPressEvent(QKeyEvent *pKeyEvent)
         {
             --m_CurrentCommand;
             QString sCommand = *m_CurrentCommand;
-            m_pLineEdit->setText(sCommand);
+            m_pCommandEditor->setText(sCommand);
         }
         break;
     }
@@ -58,11 +76,11 @@ void CCommand_Panel::keyPressEvent(QKeyEvent *pKeyEvent)
             if (m_CurrentCommand != m_CommandBuffer.end())
             {
                 QString sCommand = *m_CurrentCommand;
-                m_pLineEdit->setText(sCommand);
+                m_pCommandEditor->setText(sCommand);
             }
             else
             {
-                m_pLineEdit->clear();
+                m_pCommandEditor->clear();
             }
         }
         break;

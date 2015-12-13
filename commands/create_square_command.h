@@ -2,10 +2,17 @@
 #define CCREATE_SQUARE_COMMAND_H
 
 
-class Ccreate_square_command
+#include "create_command_base.h"
+
+
+typedef class CCreate_square_command : public CCreate_Command_Base
 {
 public:
-    Ccreate_square_command();
-};
+    CCreate_square_command( CExpr* pX, CExpr* pY, CExpr* pW );
+
+public:
+    virtual double eval( CContext& context );
+
+} createSquare;
 
 #endif // CCREATE_SQUARE_COMMAND_H

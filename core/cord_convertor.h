@@ -11,7 +11,10 @@ public:
     void setSize(int w, int h);
 
     int convert_X(int x) const;
-    int convert_y(int y) const;
+    int convert_Y(int y) const;
+
+    double convert_X(double x) const;
+    double convert_Y(double y) const;
 
 private:
     int m_nOrigin_x;

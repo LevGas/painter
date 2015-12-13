@@ -1,21 +1,35 @@
-#ifndef CLINE_EDIT_H
-#define CLINE_EDIT_H
+#ifndef CCOMMAND_EDITOR_H
+#define CCOMMAND_EDITOR_H
 
+
+////////////////////////////////////////
+//  includes
+////////////////////////////////////////
 #include <QLineEdit>
 #include <QString>
 
 
-class CLine_Edit : public QLineEdit
+class CCommand_Editor : public QLineEdit
 {
     Q_OBJECT
 public:
-    CLine_Edit(QWidget *parent = 0);
+    //  constructor
+    CCommand_Editor(QWidget *pParent = 0);
 
-public slots:
-    void return_pressed();
+private slots:
+    //
+    //
+    //
+    void commandEdited();
 
 signals:
-    void text_edited(QString);
+    //
+    //
+    //
+    void sigNewCommand(QString);
+
 };
 
-#endif // CLINE_EDIT_H
+
+#endif // CCOMMAND_EDITOR_H
+// end of file

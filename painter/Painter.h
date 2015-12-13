@@ -1,9 +1,9 @@
 #ifndef PAINTER_H
 #define PAINTER_H
 
-#include "command_panel.h"
-#include "data_manager.h"
-#include "page_manager.h"
+#include "cmd/command_panel.h"
+#include "commands/data_manager.h"
+#include "core/page_manager.h"
 #include "page_tab.h"
 
 #include <QMainWindow>

@@ -1,11 +1,23 @@
-#ifndef CSQUAER_H
-#define CSQUAER_H
+#ifndef CSQUARE_H
+#define CSQUARE_H
+
+#include "shape_base.h"
 
 
-class CSquaer : public CShape_Base
+class CSquare : public CShape_Base
 {
 public:
-    CSquaer();
+    CSquare(double x, double y, double width);
+    ~CSquare();
+
+    CShape_Base::EShapeType type() const;
+
+
+    double get_Width() const;
+
+private:
+    double m_dWidth;
+
 };
 
-#endif // CSQUAER_H
+#endif // CSQUARE_H

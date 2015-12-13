@@ -11,7 +11,8 @@ public:
     CClear_Command();
     ~CClear_Command();
 
-    void exec(const QStringList &);
+public:
+    double eval( CContext& );
 
 };
 

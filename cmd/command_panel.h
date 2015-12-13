@@ -1,13 +1,17 @@
 #ifndef CCOMMAND_PANEL_H
 #define CCOMMAND_PANEL_H
 
+
+////////////////////////////////////////////////
+// includes
+////////////////////////////////////////////////
 #include <QWidget>
 #include <QString>
 #include <QTextEdit>
 #include <QStringList>
 #include <QKeyEvent>
+#include "command_editor.h"
 
-#include "line_edit.h"
 
 typedef class CCommand_Panel : public QWidget
 {
@@ -22,8 +26,8 @@ public slots:
     void get_command(QString);
 
 private:
-    QTextEdit *m_pTextEdit;
-    CLine_Edit *m_pLineEdit;
+    QTextEdit* m_pCommandsStory;
+    CCommand_Editor* m_pCommandEditor;
     QStringList m_CommandBuffer;
     QStringList::iterator m_CurrentCommand;
 

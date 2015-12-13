@@ -1,7 +1,7 @@
 #ifndef CDATAMANAGER_H
 #define CDATAMANAGER_H
 
-#include "data.h"
+#include "core/data.h"
 
 #include <QList>
 

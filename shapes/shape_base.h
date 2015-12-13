@@ -11,7 +11,7 @@ public:
         eBase = 0,
         eRect = 1,
         eCircle = 2,
-        eSquaer = 3,
+        eSquare = 3,
         eLine = 4
     };
 

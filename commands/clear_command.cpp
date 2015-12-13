@@ -10,7 +10,7 @@ CClear_Command::~CClear_Command()
 {
 }
 
-void CClear_Command::exec(const QStringList &/*args*/)
+double CClear_Command::eval(CContext &/*args*/)
 {
     CDataManager *pDataManager = CDataManager::getInstance();
     if (pDataManager != 0)
@@ -21,5 +21,7 @@ void CClear_Command::exec(const QStringList &/*args*/)
             pActiveData->clear();
         }
     }
+
+    return 0.0;
 }
 

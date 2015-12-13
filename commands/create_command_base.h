@@ -10,6 +10,12 @@ public:
     CCreate_Command_Base();
     virtual ~CCreate_Command_Base();
 
+public:
+    virtual double eval(CContext &) = 0;
+
+protected:
+    std::vector< CExpr* > m_arrArgs;
+
 } createCommand;
 
 #endif // CCREATE_COMMAND_BASE_H
